@@ -1,37 +1,84 @@
 import { classes } from 'common/react';
 import { useBackend } from '../backend';
-import { Box, Button, Section, Table } from '../components';
+import { Box, Button, Section, Table, Tabs } from '../components';
 import { Window } from '../layouts';
 
-export const MiningVendor = (props, context) => {
-  const { act, data } = useBackend(context);
-  let inventory = [
-    ...data.product_records,
-  ];
+type UserData =
+{
+  name: string,
+  job: string,
+  points: number,
+}
+
+type ProductData =
+{
+  name: string,
+  path: string,
+  price: number,
+  category: string,
+  ref: string,
+}
+
+type VendorData =
+{
+  vendorType: string,
+  user: UserData,
+  products: ProductData[],
+}
+
+export const PointVendor = (props, context) => {
+  const { act, data } = useBackend<VendorData>(context);
+  const {
+    user,
+    products,
+    vendorType,
+  } = data;
+
   return (
     <Window
-      width={425}
+      width={450}
       height={600}>
       <Window.Content scrollable>
+        <Tabs vertical>
+          <Tabs.Tab
+            key={i}
+            color="transparent"
+            selected={i === pageIndex}
+            onClick={() => setPageIndex(i)}>
+            {story.meta.title}
+          </Tabs.Tab>
+          {stories.map((story, i) => (
+            <Tabs.Tab
+              key={i}
+              color="transparent"
+              selected={i === pageIndex}
+              onClick={() => setPageIndex(i)}>
+              {story.meta.title}
+            </Tabs.Tab>
+          ))}
+        </Tabs>
         <Section title="User">
-          {data.user && (
+          {user && (
             <Box>
-              Welcome, <b>{data.user.name || "Unknown"}</b>,
+              Welcome, <b>{user.name || "Unknown"}</b>,
               {' '}
-              <b>{data.user.job || "Unemployed"}</b>!
+              <b>{user.job || "Unemployed"}</b>!
               <br />
-              Your balance is <b>{data.user.points} mining points</b>.
+              Your balance is <b>{user.points} {vendorType} points</b>. <br />
+              <Button
+
+              />
             </Box>
           ) || (
             <Box color="light-gray">
-              No registered ID card!<br />
-              Please contact your local HoP!
+              No ID detected.<br />
+              Please insert your ID to continue.
             </Box>
           )}
         </Section>
         <Section title="Equipment">
           <Table>
-            {inventory.map((product => {
+            {products.map((product => {
               return (
                 <Table.Row key={product.name}>
                   <Table.Cell>
