@@ -93,6 +93,16 @@ GLOBAL_LIST_EMPTY(damage_icon_parts)
 	M.Scale(desired_scale_x, desired_scale_y)
 	M.Translate(0, 16 * (desired_scale_y - 1))
 
+	// Mark atom as wide/long for ZM.
+	if (desired_scale_x > 1)
+		zmm_flags |= ZMM_LOOKAHEAD
+	else
+		zmm_flags &= ~ZMM_LOOKAHEAD
+	if (desired_scale_y > 1)
+		zmm_flags |= ZMM_LOOKBESIDE
+	else
+		zmm_flags &= ~ZMM_LOOKBESIDE
+
 	// handle turning
 	M.Turn(lying)
 	// extremely lazy heuristic to see if we should shift down to appear to be, well, down.
@@ -817,7 +827,7 @@ GLOBAL_LIST_EMPTY(damage_icon_parts)
 	var/list/obj/item/relevant = get_equipped_items(TRUE, TRUE)
 	if(hud_used)
 		for(var/obj/item/I as anything in relevant)
-			position_hud_item(I, slot_by_item(I))
+			position_hud_item(I, slot_id_by_item(I))
 	if(client)
 		client.screen |= relevant
 
