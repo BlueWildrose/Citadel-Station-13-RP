@@ -44,7 +44,7 @@ export const PointVendor = (props, context) => {
             key={i}
             color="transparent"
             selected={i === pageIndex}
-            onClick={() => setPageIndex(i)}>
+            onClick={() => setCategory(i)}>
             {story.meta.title}
           </Tabs.Tab>
           {stories.map((story, i) => (
@@ -52,7 +52,7 @@ export const PointVendor = (props, context) => {
               key={i}
               color="transparent"
               selected={i === pageIndex}
-              onClick={() => setPageIndex(i)}>
+              onClick={() => setCategory(i)}>
               {story.meta.title}
             </Tabs.Tab>
           ))}
